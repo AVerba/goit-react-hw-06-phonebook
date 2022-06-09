@@ -9,9 +9,21 @@ const contacts = createSlice({
     filter: '',
   },
   reducers: {
-    addContact() {},
-    deleteContact() {},
-    filterContact() {},
+    addContact(state, { payload }) {
+      return {
+        ...state,
+        items: [...state.items, payload],
+      };
+    },
+    deleteContact(state, { payload }) {
+      return {
+        ...state,
+        items: state.items.filter(item => item !== payload),
+      };
+    },
+    filterContact(state, { payload }) {
+      return { ...state, filter: payload };
+    },
   },
 });
 export const { addContact, deleteContact, filterContact } = contacts.actions;
