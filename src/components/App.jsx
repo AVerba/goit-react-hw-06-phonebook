@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import React from 'react';
+
 import styles from './App.module.css';
 import { ContactForm } from './ContactForm';
 import { ContactFilter } from './ContactFilter';
@@ -15,33 +15,6 @@ const initialContacts = [
 ];
 
 export const App = () => {
-  // const [contacts, setContacts] = useState(
-  //   () => JSON.parse(localStorage.getItem('contacts')) ?? initialContacts
-  // );
-  // const [filter, setFilter] = useState('');
-  //
-  // useEffect(() => {
-  //   localStorage.setItem('contacts', JSON.stringify(contacts));
-  // }, [contacts]);
-
-  // const addContact = contact => {
-  //   setContacts([...contacts, contact]);
-  // };
-  //
-  // const filterInputHandler = e => {
-  //   setFilter(e.currentTarget.value);
-  // };
-  // const contactAfterFilter = () => {
-  //   return [...contacts].filter(contact =>
-  //     contact.name.toLowerCase().includes(filter.toLocaleLowerCase())
-  //   );
-  // };
-
-  // const deleteContact = e => {
-  //   const elemToRemove = e.currentTarget.parentNode.id;
-  //   setContacts(contacts.filter(item => item.id !== elemToRemove));
-  // };
-
   return (
     <div className={styles.ContactForm}>
       <ContactForm />
