@@ -2,15 +2,20 @@ import React, { useState, useEffect } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import shortid from 'shortid';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact, getContacts } from '../../store/contactsSlise';
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-import PropTypes from 'prop-types';
 import styles from './ContactForm.module.css';
 
-export const ContactForm = ({ addContact, contacts }) => {
+const nameRegex = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
+
+export const ContactForm = () => {
   const [user, setUser] = useState({ name: '', number: '' });
   const [isDisabled, setIsDisabled] = useState(true);
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
 
   const resetForm = () => {
     setUser({ name: '', number: '' });
@@ -24,33 +29,12 @@ export const ContactForm = ({ addContact, contacts }) => {
       name: user.name,
       number: user.number,
     };
-    if (contact.number.length <= 4)
-      return Notify.failure(`Enter valid number ${contact.number}`);
-
-    addContact(contact);
+    dispatch(addContact(contact));
     resetForm();
   };
-  useEffect(() => {
-    if (user.name && user.number) setIsDisabled(false);
-  }, [user.name, user.number]);
 
   const formChangeNameHandler = e => {
     const { name, value } = e.currentTarget;
-    setUser(user => ({ ...user, [name]: value }));
-  };
-  const formChangePhoneHandler = phone => {
-    setUser(user => ({ ...user, number: phone }));
-  };
-  const formCheckValueHandler = e => {
-    console.log(user);
-    const { value } = e.currentTarget;
-    const nameRegex =
-      /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
-    if (!nameRegex.test(value) || value.length === 0) {
-      return Notify.failure(
-        'Enter valid name.The name should to contain only Alphabet letter. Try again'
-      );
-    }
     if (value) {
       const contactFinder = contacts.find(
         contact =>
@@ -59,8 +43,30 @@ export const ContactForm = ({ addContact, contacts }) => {
       );
       if (contactFinder) {
         setIsDisabled(true);
-        Notify.warning(`${value} is already in contacts.`);
+        return Notify.warning(`${value} is already in contacts.`);
       }
+    }
+    setUser(user => ({ ...user, [name]: value }));
+  };
+  const formChangePhoneHandler = phone => {
+    setUser(user => ({ ...user, number: phone }));
+  };
+
+  useEffect(() => {
+    if (user.name && user.number) setIsDisabled(false);
+  }, [user.name, user.number]);
+
+  const formCheckValueHandler = e => {
+    const { value } = e.currentTarget;
+    if (value.length === 0) {
+      return Notify.failure(
+        'Enter valid name.The name can not be empty. Try again'
+      );
+    }
+    if (!nameRegex.test(value)) {
+      return Notify.failure(
+        'Enter valid name.The name should to contain only Alphabet letter. Try again'
+      );
     }
   };
 
@@ -102,15 +108,4 @@ export const ContactForm = ({ addContact, contacts }) => {
       </button>
     </form>
   );
-};
-
-ContactForm.propTypes = {
-  addContact: PropTypes.func,
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-    })
-  ),
 };

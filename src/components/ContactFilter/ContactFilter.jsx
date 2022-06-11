@@ -1,15 +1,17 @@
 import styles from './ContactFilter.module.css';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { filterContact, getFilter } from '../../store/contactsSlise';
 
-export const ContactFilter = ({ onInput, value }) => {
+export const ContactFilter = () => {
+  const filterValue = useSelector(getFilter);
+  const dispatch = useDispatch();
   return (
     <div className={styles.filter}>
       <p className={styles.text}>Find contacts by name</p>
-      <input onChange={e => onInput(e)} value={value} />
+      <input
+        onChange={e => dispatch(filterContact(e.currentTarget.value))}
+        value={filterValue}
+      />
     </div>
   );
-};
-
-ContactFilter.propTypes = {
-  onInput: PropTypes.func,
 };

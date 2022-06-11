@@ -15,43 +15,39 @@ const initialContacts = [
 ];
 
 export const App = () => {
-  const [contacts, setContacts] = useState(
-    () => JSON.parse(localStorage.getItem('contacts')) ?? initialContacts
-  );
-  const [filter, setFilter] = useState('');
+  // const [contacts, setContacts] = useState(
+  //   () => JSON.parse(localStorage.getItem('contacts')) ?? initialContacts
+  // );
+  // const [filter, setFilter] = useState('');
+  //
+  // useEffect(() => {
+  //   localStorage.setItem('contacts', JSON.stringify(contacts));
+  // }, [contacts]);
 
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  // const addContact = contact => {
+  //   setContacts([...contacts, contact]);
+  // };
+  //
+  // const filterInputHandler = e => {
+  //   setFilter(e.currentTarget.value);
+  // };
+  // const contactAfterFilter = () => {
+  //   return [...contacts].filter(contact =>
+  //     contact.name.toLowerCase().includes(filter.toLocaleLowerCase())
+  //   );
+  // };
 
-  const addContact = contact => {
-    setContacts([...contacts, contact]);
-  };
-
-  const filterInputHandler = e => {
-    setFilter(e.currentTarget.value);
-  };
-  const contactAfterFilter = () => {
-    return [...contacts].filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLocaleLowerCase())
-    );
-  };
-
-  const deleteContact = e => {
-    const elemToRemove = e.currentTarget.parentNode.id;
-    setContacts(contacts.filter(item => item.id !== elemToRemove));
-  };
+  // const deleteContact = e => {
+  //   const elemToRemove = e.currentTarget.parentNode.id;
+  //   setContacts(contacts.filter(item => item.id !== elemToRemove));
+  // };
 
   return (
     <div className={styles.ContactForm}>
-      <ContactForm addContact={addContact} contacts={contacts} />
-
+      <ContactForm />
       <Title className={styles.contact} title="Contacts" />
-      <ContactFilter onInput={filterInputHandler} value={filter} />
-      <ContactList
-        contacts={contactAfterFilter()}
-        deleteContact={deleteContact}
-      />
+      <ContactFilter />
+      <ContactList />
     </div>
   );
 };
