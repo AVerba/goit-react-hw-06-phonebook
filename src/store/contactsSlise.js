@@ -15,7 +15,6 @@ const initialState = {
 const persistConfig = {
   key: 'contacts',
   storage,
-  whitelist: ['contacts'],
 };
 const contactsSlice = createSlice({
   name: 'contacts',
